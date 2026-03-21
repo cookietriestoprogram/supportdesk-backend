@@ -49,4 +49,23 @@ class GraphqlController < ApplicationController
 
     render json: { errors: [{ message: e.message, backtrace: e.backtrace }], data: {} }, status: 500
   end
+
+  def context
+    {
+      current_user: current_user
+    }
+  end
+
+  def current_user
+    header = request.headers["Authorization"]
+    return nil unless header
+
+    token = header.split(" ").last
+    decoded = JWT.decode(token, Rails.application.secret_key_base)[0]
+
+    User.find(decoded["user_id"])
+  rescue
+    nil
+  end
+
 end
