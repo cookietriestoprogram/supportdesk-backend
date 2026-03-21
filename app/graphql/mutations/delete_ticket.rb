@@ -8,7 +8,7 @@ module Mutations
       user = context[:current_user]
       ticket = Ticket.find(id)
 
-      raise "Unauthorized" unless ticket.user == user
+      raise "Unauthorized" unless user.admin? || ticket.user == user 
 
       ticket.destroy
       { success: true }

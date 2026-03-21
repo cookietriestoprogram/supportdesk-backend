@@ -3,9 +3,6 @@
 module Types
   class QueryType < Types::BaseObject
 
-    # get all tickets based on role
-    field :tickets, [Types::TicketType], null: false
-
     # get tickets with filtering
     field :tickets, [Types::TicketType], null: false do
       argument :status, String, required: false
@@ -40,21 +37,14 @@ module Types
     end
 
     def tickets(status: nil, priority: nil, category: nil)
-      scope = context[:current_user].admin? ? Ticket.all : context[:current_user].tickets
-      
+      user = context[:current_user]
+      scope = user.admin? ? Ticket.all : user.tickets
+
       scope = scope.where(status: status) if status
       scope = scope.where(priority: priority) if priority
       scope = scope.where(category: category) if category
-      
-      scope
-    end
 
-    def tickets
-      if context[:current_user].admin?
-        Ticket.all
-      else
-        context[:current_user].tickets
-      end
+      scope
     end
    
   end
