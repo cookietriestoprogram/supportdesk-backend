@@ -16,6 +16,19 @@ module Types
     # get dashboard stats (admin only)
     field :dashboard_stats, Types::DashboardStatsType, null: false
 
+    # get a single ticket for a user
+    field :ticket, Types::TicketType, null: true do
+      argument :id, ID, required: true
+    end
+
+    def ticket(id:)
+      ticket = Ticket.find(id)
+      current_user = context[:current_user]
+      return nil unless current_user.admin? || ticket.user == user
+      ticket
+    end
+
+
     def dashboard_stats
       return nil unless context[:current_user]&.admin?
       {
