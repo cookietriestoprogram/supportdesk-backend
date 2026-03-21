@@ -4,4 +4,7 @@ class User < ApplicationRecord
 
     has_many :tickets
     has_many :assigned_tickets, class_name: "Ticket", foreign_key: "assigned_to_id"
+
+    validates :email, presence: true, uniqueness: true
+    validates :password, presence: true, length: { minimum: 8 }, on: :create
 end

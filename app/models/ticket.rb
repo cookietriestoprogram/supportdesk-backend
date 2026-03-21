@@ -5,4 +5,6 @@ class Ticket < ApplicationRecord
 
   belongs_to :user
   belongs_to :assigned_to, class_name: "User", optional: true
+
+  validates :subject, :description, presence: true
 end
