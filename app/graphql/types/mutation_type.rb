@@ -6,5 +6,6 @@ module Types
     field :update_ticket, mutation: Mutations::UpdateTicket
     field :delete_ticket, mutation: Mutations::DeleteTicket
     field :login, mutation: Mutations::Login
+    field :register, mutation: Mutations::Register
   end
 end
