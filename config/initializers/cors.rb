@@ -18,10 +18,11 @@
 
 Rails.application.config.middleware.insert_before 0, Rack::Cors do
   allow do
-    origins 'http://localhost:5173', 'https://supportdesks-frontend.onrender.com'
+    origins '*'
     
     resource '*',
       headers: :any,
-      methods: [:get, :post, :put, :patch, :delete, :options]
+      methods: :any,
+      credentials: false
   end
 end
