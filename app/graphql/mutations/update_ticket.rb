@@ -5,6 +5,7 @@ module Mutations
     argument :description, String, required: false
     argument :priority, String, required: false
     argument :status, String, required: false
+    argument :category, String, required: false
     argument :assigned_to_id, ID, required: false
 
     field :ticket, Types::TicketType, null: true
@@ -29,7 +30,7 @@ module Mutations
         end
         ticket.update!(args)
       end 
-      
+
       { ticket: ticket }
     end
   end
