@@ -19,6 +19,13 @@ module Types
     field :ticket, Types::TicketType, null: true do
       argument :id, ID, required: true
     end
+    
+    field :users, [Types::UserType], null: true
+
+    def users
+      return nil unless context[:current_user]&.admin?
+      User.all
+    end
 
     def me
       context[:current_user]
@@ -27,7 +34,7 @@ module Types
     def ticket(id:)
       ticket = Ticket.find(id)
       current_user = context[:current_user]
-      return nil unless current_user.admin? || ticket.user == user
+      return nil unless current_user&.admin? || ticket.user == current_user
       ticket
     end
 

@@ -17,7 +17,19 @@ module Mutations
         raise "Unauthorized"
       end
 
-      ticket.update!(args)
+      if user.admin?
+        allowed_fields = args.slice(:status, :assigned_to_id)
+        if allowed_fields.empty?
+          raise "Admins can only update status or assignment"
+        end
+        ticket.update!(allowed_fields)
+      else
+        unless ticket.open?
+          raise "Edit only open tickets"
+        end
+        ticket.update!(args)
+      end 
+      
       { ticket: ticket }
     end
   end
