@@ -5,8 +5,8 @@ module Mutations
     argument :name, String, required: true
     argument :role, String, required: false
 
-    field :user, Types::UserType, null: false
-    field :token, String, null: false
+    field :user, Types::UserType, null: true
+    field :token, String, null: true
     field :errors, [String], null: false
 
     def resolve(name:, email:, password:, role: "user")
@@ -23,7 +23,7 @@ module Mutations
         {
           user: nil,
           token: nil,
-          errors: user.errors.full_messages
+          errors: 'Registration failed'
         }
       end
     end
