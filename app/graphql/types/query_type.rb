@@ -3,6 +3,8 @@
 module Types
   class QueryType < Types::BaseObject
 
+    field :me, Types::UserType, null: true 
+
     # get tickets with filtering
     field :tickets, [Types::TicketType], null: false do
       argument :status, String, required: false
@@ -16,6 +18,10 @@ module Types
     # get a single ticket for a user
     field :ticket, Types::TicketType, null: true do
       argument :id, ID, required: true
+    end
+
+    def me
+      context[:current_user]
     end
 
     def ticket(id:)
